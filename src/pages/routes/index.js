@@ -10,6 +10,7 @@ const Routes = () => {
     <Switch>
       <Route path="/" component={GlobalFeed} exact />
       <Route path="/login" component={Authentication} />
+      <Route path="/register" component={Authentication} />
       <Route path="/article" component={Article} />
     </Switch>
   )
