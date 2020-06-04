@@ -9,21 +9,17 @@ const useFetch = (url) => {
   const [options, setOptions] = useState({})
 
   const doFetch = (options = {}) => {
-    debugger
     setOptions(options)
     setIsloading(true)
   }
 
   useEffect(() => {
-    debugger
     if (isLoading) {
       axios(`${baseUrl}${url}`, options)
         .then((response) => {
-          debugger
-          setResponse(response)
+          setResponse(response.data)
         })
         .catch((error) => {
-          debugger
           setError(error)
         })
         .finally(() => {

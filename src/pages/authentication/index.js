@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useContext } from "react"
 import { Link, Redirect } from "react-router-dom"
 import useInput from "hooks/useInput"
 import useFetch from "hooks/useFetch"
 import useLocalStorage from "hooks/useLocalStorage"
+import { CurrentUserContext } from "contexts/currentUser"
 
 const Authentication = (props) => {
   const isLogin = props.match.path === "/login"
@@ -21,15 +22,23 @@ const Authentication = (props) => {
 
   const [token, setToken] = useLocalStorage("token")
 
+  const [currentUserState, setCurrentUserState] = useContext(CurrentUserContext)
+
   useEffect(() => {
     if (!response) return
 
     console.log("response", response)
 
-    localStorage.setItem("token", response.data.user.token)
-    setToken(response.data.user.token)
+    localStorage.setItem("token", response.user.token)
+    setToken(response.user.token)
+    setCurrentUserState((state) => ({
+      ...state,
+      isLoggedIn: true,
+      isLoading: false,
+      currentUser: response.user,
+    }))
     setIsSuccessfullSubmit(true)
-  }, [response, setToken])
+  }, [response, setCurrentUserState, setToken])
 
   if (isSuccessfullSubmit) {
     return <Redirect to="" />
